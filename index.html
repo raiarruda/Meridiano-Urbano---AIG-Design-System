@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridiano Urbano — AIG Design System</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--neutral-50); font-family: var(--font-body); color: var(--text-primary); }
+
+  .nav {
+    background: var(--navy-800);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo-text { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: white; letter-spacing: -0.02em; line-height: 1; }
+  .logo-sub { font-family: var(--font-heading); font-size: 8px; font-weight: 600; letter-spacing: .14em; color: var(--amber-400); line-height: 1; margin-top: 2px; }
+  .nav-tag { font-family: var(--font-mono); font-size: 11px; color: var(--navy-300); letter-spacing: .06em; }
+
+  .hero {
+    background: var(--navy-900);
+    padding: 72px 48px 80px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .14em;
+    color: var(--amber-400);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+  }
+  .hero-title em { color: var(--amber-500); font-style: normal; }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--navy-200);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 56px 48px;
+  }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--neutral-200);
+  }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .card {
+    background: white;
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--radius-xl);
+    padding: 24px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: box-shadow 150ms ease-out, border-color 150ms ease-out;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--navy-200);
+  }
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: var(--radius-lg);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-title { font-family: var(--font-heading); font-size: 15px; font-weight: 700; color: var(--navy-800); }
+  .card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .card-arrow {
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--safira-600);
+    letter-spacing: .04em;
+  }
+
+  .tokens-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border: 1px solid var(--neutral-200); border-radius: var(--radius-xl); overflow: hidden; }
+  .token-cell { padding: 16px 14px; border-right: 1px solid var(--neutral-200); }
+  .token-cell:last-child { border-right: none; }
+  .token-swatch { height: 32px; border-radius: var(--radius-md); margin-bottom: 10px; }
+  .token-name { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+  .token-val { font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); font-weight: 500; }
+
+  .type-row { display: flex; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--neutral-100); }
+  .type-row:last-child { border-bottom: none; }
+  .type-meta { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); min-width: 160px; flex-shrink: 0; }
+
+  footer {
+    background: var(--navy-900);
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  footer span { font-family: var(--font-mono); font-size: 11px; color: var(--navy-400); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a class="logo" href="#">
+    <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+      <rect x="18" y="52" width="64" height="44" fill="white" rx="2"/>
+      <polygon points="50,8 82,55 18,55" fill="#E87D2C"/>
+      <rect x="25" y="60" width="18" height="13" fill="#002445" rx="1"/>
+      <rect x="57" y="60" width="18" height="13" fill="#002445" rx="1"/>
+      <rect x="33" y="75" width="22" height="21" fill="#002445" rx="1"/>
+    </svg>
+    <div>
+      <div class="logo-text">AIG</div>
+      <div class="logo-sub">AVALIAÇÃO DE IMÓVEIS</div>
+    </div>
+  </a>
+  <span class="nav-tag">MERIDIANO URBANO · DESIGN SYSTEM v1.0</span>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow">Sistema de Design</div>
+  <h1 class="hero-title">MERIDIANO<br/><em>URBANO</em></h1>
+  <p class="hero-sub">Guia visual completo para os produtos digitais da AIG Avaliação de Imóveis — fundações, componentes e UI kits prontos para uso.</p>
+</div>
+
+<!-- UI Kits -->
+<div class="section">
+  <div class="section-label">UI Kits — Telas interativas</div>
+  <div class="cards">
+    <a class="card" href="ui_kits/public/index.html">
+      <div class="card-icon" style="background: var(--amber-50);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <div class="card-title">Área Pública — Formulário de Avaliação</div>
+      <div class="card-desc">Landing page com formulário multi-step. Cliente preenche dados do imóvel e recebe resultado por e-mail.</div>
+      <div class="card-arrow">Abrir UI Kit →</div>
+    </a>
+    <a class="card" href="ui_kits/admin/index.html">
+      <div class="card-icon" style="background: var(--navy-50);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      </div>
+      <div class="card-title">Área Admin — Painel de Gestão</div>
+      <div class="card-desc">Tabela CUB com edição inline, badges de status, toasts de confirmação e micro CRM de leads.</div>
+      <div class="card-arrow">Abrir UI Kit →</div>
+    </a>
+  </div>
+</div>
+
+<!-- Color tokens -->
+<div style="background: white; border-top: 1px solid var(--neutral-200); border-bottom: 1px solid var(--neutral-200);">
+  <div class="section" style="padding-top: 40px; padding-bottom: 40px;">
+    <div class="section-label">Paleta de Cores</div>
+    <div class="tokens-grid">
+      <div class="token-cell">
+        <div class="token-swatch" style="background: #002445;"></div>
+        <div class="token-name">--navy-800</div>
+        <div class="token-val">#002445</div>
+      </div>
+      <div class="token-cell">
+        <div class="token-swatch" style="background: #E87D2C;"></div>
+        <div class="token-name">--amber-500</div>
+        <div class="token-val">#E87D2C</div>
+      </div>
+      <div class="token-cell">
+        <div class="token-swatch" style="background: #1A6B94;"></div>
+        <div class="token-name">--safira-600</div>
+        <div class="token-val">#1A6B94</div>
+      </div>
+      <div class="token-cell">
+        <div class="token-swatch" style="background: #26A85E;"></div>
+        <div class="token-name">--success-500</div>
+        <div class="token-val">#26A85E</div>
+      </div>
+      <div class="token-cell" style="border-right:none;">
+        <div class="token-swatch" style="background: #F0F3F8; border: 1px solid #DAE1EC;"></div>
+        <div class="token-name">--neutral-100</div>
+        <div class="token-val">#F0F3F8</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Guidelines cards -->
+<div class="section">
+  <div class="section-label">Fundações Visuais</div>
+  <div class="cards">
+    <a class="card" href="guidelines/colors-navy.card.html">
+      <div style="display:flex; gap:4px; margin-bottom:4px;">
+        <div style="height:24px; flex:1; background:#002445; border-radius:4px;"></div>
+        <div style="height:24px; flex:1; background:#144B82; border-radius:4px;"></div>
+        <div style="height:24px; flex:1; background:#6B95C8; border-radius:4px;"></div>
+        <div style="height:24px; flex:1; background:#D7E5F8; border-radius:4px;"></div>
+      </div>
+      <div class="card-title">Navy — Cor Primária</div>
+      <div class="card-desc">10 tons da cor primária #002445. Usada em fundos, textos e headers.</div>
+      <div class="card-arrow">Ver escala →</div>
+    </a>
+    <a class="card" href="guidelines/colors-amber.card.html">
+      <div style="display:flex; gap:4px; margin-bottom:4px;">
+        <div style="height:24px; flex:1; background:#C0620A; border-radius:4px;"></div>
+        <div style="height:24px; flex:1; background:#E87D2C; border-radius:4px;"></div>
+        <div style="height:24px; flex:1; background:#F5AD7A; border-radius:4px;"></div>
+        <div style="height:24px; flex:1; background:#FDE5CC; border-radius:4px;"></div>
+      </div>
+      <div class="card-title">Amber — Destaque</div>
+      <div class="card-desc">10 tons da cor de destaque #E87D2C. CTAs e valores em foco.</div>
+      <div class="card-arrow">Ver escala →</div>
+    </a>
+    <a class="card" href="guidelines/type-display.card.html">
+      <div style="font-family:'Big Shoulders Display',sans-serif; font-size:32px; font-weight:900; color:var(--navy-800); letter-spacing:-0.02em; text-transform:uppercase; line-height:1; margin-bottom:4px;">DISPLAY</div>
+      <div class="card-title">Tipografia Display</div>
+      <div class="card-desc">Big Shoulders Display Bold — hero, títulos de sistema, sempre em maiúsculas.</div>
+      <div class="card-arrow">Ver specimen →</div>
+    </a>
+    <a class="card" href="guidelines/type-mono.card.html">
+      <div style="font-family:'DM Mono',monospace; font-size:20px; color:var(--amber-600); margin-bottom:4px;">R$ 2.847,35</div>
+      <div class="card-title">Tipografia Mono</div>
+      <div class="card-desc">DM Mono — dados numéricos, CUB, percentuais, códigos de tipo.</div>
+      <div class="card-arrow">Ver specimen →</div>
+    </a>
+    <a class="card" href="guidelines/shadows.card.html">
+      <div style="display:flex; gap:10px; margin-bottom:4px;">
+        <div style="width:40px;height:32px;background:white;border-radius:6px;box-shadow:0 1px 4px rgba(13,36,69,.10);"></div>
+        <div style="width:40px;height:32px;background:white;border-radius:6px;box-shadow:0 4px 12px rgba(13,36,69,.12);"></div>
+        <div style="width:40px;height:32px;background:white;border-radius:6px;box-shadow:0 8px 24px rgba(13,36,69,.14);"></div>
+      </div>
+      <div class="card-title">Sistema de Sombras</div>
+      <div class="card-desc">Sombras com tom navy — xs a 2xl, mais amber glow e focus rings.</div>
+      <div class="card-arrow">Ver tokens →</div>
+    </a>
+    <a class="card" href="guidelines/brand-logo.card.html">
+      <div style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+        <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+          <rect x="18" y="52" width="64" height="44" fill="#002445" rx="2"/>
+          <polygon points="50,8 82,55 18,55" fill="#E87D2C"/>
+          <rect x="25" y="60" width="18" height="13" fill="white" rx="1"/>
+          <rect x="57" y="60" width="18" height="13" fill="white" rx="1"/>
+          <rect x="33" y="75" width="22" height="21" fill="white" rx="1"/>
+        </svg>
+        <div style="font-family:'Big Shoulders Display',sans-serif; font-size:28px; font-weight:800; color:var(--navy-800); letter-spacing:-0.02em;">AIG</div>
+      </div>
+      <div class="card-title">Logo — Variações</div>
+      <div class="card-desc">Ícone casa + wordmark AIG em todas as variações e fundos.</div>
+      <div class="card-arrow">Ver variações →</div>
+    </a>
+  </div>
+</div>
+
+<!-- Components -->
+<div style="background: white; border-top: 1px solid var(--neutral-200); border-bottom: 1px solid var(--neutral-200);">
+  <div class="section" style="padding-top: 40px; padding-bottom: 40px;">
+    <div class="section-label">Componentes</div>
+    <div class="cards">
+      <a class="card" href="components/core/buttons.card.html">
+        <div class="card-title">Botões</div>
+        <div class="card-desc">Button — 5 variantes (primary, accent, secondary, ghost, danger) × 3 tamanhos.</div>
+        <div class="card-arrow">Ver componente →</div>
+      </a>
+      <a class="card" href="components/forms/forms.card.html">
+        <div class="card-title">Campos de Entrada</div>
+        <div class="card-desc">Input, Select, Checkbox — com label, helper text e todos os estados de validação.</div>
+        <div class="card-arrow">Ver componente →</div>
+      </a>
+      <a class="card" href="components/feedback/feedback.card.html">
+        <div class="card-title">Feedback</div>
+        <div class="card-desc">Badge (7 variantes de status) e Toast (sucesso, erro, info, alerta).</div>
+        <div class="card-arrow">Ver componente →</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+      <rect x="18" y="52" width="64" height="44" fill="white" rx="2"/>
+      <polygon points="50,8 82,55 18,55" fill="#E87D2C"/>
+      <rect x="25" y="60" width="18" height="13" fill="#002445" rx="1"/>
+      <rect x="57" y="60" width="18" height="13" fill="#002445" rx="1"/>
+      <rect x="33" y="75" width="22" height="21" fill="#002445" rx="1"/>
+    </svg>
+    <span style="font-family: var(--font-display); font-size:16px; font-weight:800; color:white; letter-spacing:-0.02em;">AIG</span>
+  </div>
+  <span>Meridiano Urbano Design System v1.0 · Salvador, BA · © 2025 AIG Avaliação de Imóveis</span>
+</footer>
+
+</body>
+</html>

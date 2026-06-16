@@ -1,0 +1,62 @@
+<!-- @dsCard group="Components" viewport="700x320" name="Botões" subtitle="5 variantes × 3 tamanhos, estados hover/disabled" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 20px 24px; background: var(--neutral-50); font-family: var(--font-body); }
+  .section { margin-bottom: 20px; }
+  .label { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 10px; letter-spacing: .06em; text-transform: uppercase; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .divider { border: none; border-top: 1px solid var(--neutral-200); margin: 4px 0 16px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { Button } = window.MeridianoUrbanoAIGDesignSystem_405b20;
+
+function App() {
+  return (
+    <div>
+      <div className="section">
+        <div className="label">Variantes — tamanho md</div>
+        <div className="row">
+          <Button variant="primary">Salvar Configuração</Button>
+          <Button variant="accent">Avaliar Imóvel</Button>
+          <Button variant="secondary">Ver Detalhes</Button>
+          <Button variant="ghost">Limpar Filtros</Button>
+          <Button variant="danger">Excluir</Button>
+        </div>
+      </div>
+      <hr className="divider" />
+      <div className="section">
+        <div className="label">Tamanhos — variante primary</div>
+        <div className="row">
+          <Button variant="primary" size="sm">Importar CSV</Button>
+          <Button variant="primary" size="md">Salvar Configuração</Button>
+          <Button variant="primary" size="lg">Solicitar Avaliação</Button>
+        </div>
+      </div>
+      <hr className="divider" />
+      <div className="section">
+        <div className="label">Estados desabilitados</div>
+        <div className="row">
+          <Button variant="primary" disabled>Salvar</Button>
+          <Button variant="accent" disabled>Avaliar</Button>
+          <Button variant="secondary" disabled>Ver Detalhes</Button>
+          <Button variant="ghost" disabled>Limpar</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

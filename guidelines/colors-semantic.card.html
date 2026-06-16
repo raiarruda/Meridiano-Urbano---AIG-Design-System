@@ -1,0 +1,47 @@
+<!-- @dsCard group="Colors" viewport="700x200" name="Cores Semânticas" subtitle="Sucesso, Erro, Info, Alerta" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;padding:16px;background:var(--white);font-family:var(--font-body);}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .item{border-radius:var(--radius-lg);overflow:hidden;}
+  .solid{height:48px;display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:13px;font-weight:700;letter-spacing:.04em;color:#fff;}
+  .light{height:36px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:0 10px;}
+  .light span{font-size:10px;color:var(--text-secondary);}
+  .badge{display:inline-block;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;letter-spacing:.08em;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="item">
+    <div class="solid" style="background:var(--success-500)">SUCESSO</div>
+    <div class="light" style="background:var(--success-50);border:1px solid var(--success-100);border-top:none">
+      <span>#26A85E · Valor salvo</span>
+      <span class="badge" style="background:var(--success-100);color:var(--success-500)">ATIVO</span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="solid" style="background:var(--error-500)">ERRO</div>
+    <div class="light" style="background:var(--error-50);border:1px solid var(--error-100);border-top:none">
+      <span>#D63744 · Campo inválido</span>
+      <span class="badge" style="background:var(--error-100);color:var(--error-500)">INATIVO</span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="solid" style="background:var(--info-500)">INFO</div>
+    <div class="light" style="background:var(--info-50);border:1px solid var(--info-100);border-top:none">
+      <span>#1A6B94 · Atualização</span>
+      <span class="badge" style="background:var(--info-100);color:var(--info-500)">OFICIAL</span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="solid" style="background:var(--alert-500)">ALERTA</div>
+    <div class="light" style="background:var(--alert-50);border:1px solid var(--alert-100);border-top:none">
+      <span>#C0B816 · Em revisão</span>
+      <span class="badge" style="background:var(--alert-100);color:#7a7400">REVISAR</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!-- @dsCard group="Área Admin" viewport="1280x720" name="Painel Administrativo" subtitle="Tabela CUB com edição inline, badges de status e micro CRM" -->
+<!-- @startingPoint section="Área Admin" subtitle="Painel admin com tabela CUB, edição inline e CRM de leads" viewport="1280x720" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIG — Admin</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-body); background: var(--neutral-100); color: var(--text-primary); height: 100vh; overflow: hidden; }
+  input { font-family: var(--font-mono); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { Button, Badge, Toast, IconButton } = window.MeridianoUrbanoAIGDesignSystem_405b20;
+
+/* ── Icons (inline SVG helpers) ── */
+const Icon = ({ d, size=16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+    <path d={d}/>
+  </svg>
+);
+const HomeIcon   = () => <Icon d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"/>;
+const TableIcon  = () => <Icon d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>;
+const UsersIcon  = () => <Icon d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/>;
+const SettingsIcon = () => <Icon d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>;
+const EditIcon   = () => <Icon d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>;
+const DownloadIcon = () => <Icon d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3"/>;
+const UploadIcon = () => <Icon d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M17 8l-5-5-5 5 M12 3v12"/>;
+const FilterIcon = () => <Icon d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>;
+const CheckIcon  = () => <Icon d="M20 6L9 17l-5-5"/>;
+
+/* ── CUB data ── */
+const initialRows = [
+  { id:1,  tipo:'R-1',   categoria:'Res. Unifamiliar',     padrao:'Alto',   oficial:3201.18, config:3150.00,  taxa:'1,90%', ref:'Mai/2025', status:'configurado' },
+  { id:2,  tipo:'R-1',   categoria:'Res. Unifamiliar',     padrao:'Médio',  oficial:2623.45, config:null,     taxa:'1,90%', ref:'Mai/2025', status:'oficial' },
+  { id:3,  tipo:'R-1',   categoria:'Res. Unifamiliar',     padrao:'Baixo',  oficial:1987.32, config:null,     taxa:'1,90%', ref:'Mai/2025', status:'oficial' },
+  { id:4,  tipo:'R-16',  categoria:'Res. Multifamiliar',   padrao:'Alto',   oficial:3512.67, config:null,     taxa:'2,70%', ref:'Mai/2025', status:'oficial' },
+  { id:5,  tipo:'R-16',  categoria:'Res. Multifamiliar',   padrao:'Médio',  oficial:2847.35, config:2847.35,  taxa:'2,70%', ref:'Mai/2025', status:'ativo' },
+  { id:6,  tipo:'R-16',  categoria:'Res. Multifamiliar',   padrao:'Baixo',  oficial:2234.18, config:null,     taxa:'2,70%', ref:'Mai/2025', status:'oficial' },
+  { id:7,  tipo:'PP-4',  categoria:'Prédio Popular',       padrao:'Normal', oficial:2156.83, config:null,     taxa:'2,15%', ref:'Mai/2025', status:'oficial' },
+  { id:8,  tipo:'PIS',   categoria:'Proj. Interesse Social',padrao:'Normal', oficial:1834.52, config:1900.00,  taxa:'1,65%', ref:'Abr/2025', status:'revisar' },
+  { id:9,  tipo:'CSL-8', categoria:'Comercial S/L 8 pav',  padrao:'Normal', oficial:3089.45, config:null,     taxa:'2,45%', ref:'Mai/2025', status:'oficial' },
+  { id:10, tipo:'CSL-16',categoria:'Comercial S/L 16 pav', padrao:'Normal', oficial:3421.78, config:null,     taxa:'2,45%', ref:'Mai/2025', status:'oficial' },
+  { id:11, tipo:'CAL-8', categoria:'Comercial And. Livres', padrao:'Normal', oficial:3678.92, config:null,     taxa:'2,30%', ref:'Mai/2025', status:'oficial' },
+  { id:12, tipo:'RP-1Q', categoria:'Res. Popular',         padrao:'Baixo',  oficial:1654.23, config:1700.00,  taxa:'1,45%', ref:'Mai/2025', status:'configurado' },
+];
+
+const leads = [
+  { id:1, nome:'Ana Paula Sousa',    email:'ana.sousa@gmail.com',       tipo:'Apartamento', bairro:'Pituba',    status:'avaliado',  data:'14/06/2025' },
+  { id:2, nome:'Carlos Lima',        email:'carlos.lima@outlook.com',   tipo:'Casa',        bairro:'Barra',     status:'analise',   data:'13/06/2025' },
+  { id:3, nome:'Maria Santos',       email:'maria@empresa.com.br',      tipo:'Comercial',   bairro:'Comércio',  status:'avaliado',  data:'12/06/2025' },
+  { id:4, nome:'João Ferreira',      email:'j.ferreira@hotmail.com',    tipo:'Terreno',     bairro:'Imbuí',     status:'novo',      data:'12/06/2025' },
+  { id:5, nome:'Beatriz Costa',      email:'beatriz.costa@gmail.com',   tipo:'Apartamento', bairro:'Ondina',    status:'analise',   data:'11/06/2025' },
+  { id:6, nome:'Rafael Mendonça',    email:'rafael.m@yahoo.com.br',     tipo:'Casa',        bairro:'Graça',     status:'novo',      data:'10/06/2025' },
+  { id:7, nome:'Fernanda Vieira',    email:'fer.vieira@gmail.com',      tipo:'Apartamento', bairro:'Pituba',    status:'avaliado',  data:'09/06/2025' },
+];
+
+const fmt = v => v ? `R$ ${v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2})}` : '—';
+
+const STATUS_MAP = {
+  ativo:        { label:'Ativo',       variant:'success' },
+  oficial:      { label:'Oficial',     variant:'info' },
+  configurado:  { label:'Configurado', variant:'amber' },
+  revisar:      { label:'Revisar',     variant:'alert' },
+  inativo:      { label:'Inativo',     variant:'error' },
+  avaliado:     { label:'Avaliado',    variant:'success' },
+  analise:      { label:'Em Análise',  variant:'alert' },
+  novo:         { label:'Novo',        variant:'navy' },
+};
+
+function Logo() {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+        <rect x="18" y="52" width="64" height="44" fill="white" rx="2"/>
+        <polygon points="50,8 82,55 18,55" fill="var(--amber-500)"/>
+        <rect x="25" y="60" width="18" height="13" fill="var(--navy-800)" rx="1"/>
+        <rect x="57" y="60" width="18" height="13" fill="var(--navy-800)" rx="1"/>
+        <rect x="33" y="75" width="22" height="21" fill="var(--navy-800)" rx="1"/>
+      </svg>
+      <div>
+        <div style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:'20px', color:'white', letterSpacing:'-0.02em', lineHeight:1 }}>AIG</div>
+        <div style={{ fontFamily:'var(--font-heading)', fontSize:'7px', fontWeight:600, letterSpacing:'.12em', color:'var(--navy-300)', lineHeight:1, marginTop:'2px' }}>ADMIN</div>
+      </div>
+    </div>
+  );
+}
+
+function NavItem({ icon, label, active, onClick }) {
+  const [hov, setHov] = React.useState(false);
+  return (
+    <div onClick={onClick} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ display:'flex', alignItems:'center', gap:'10px', padding:'10px 16px', borderRadius:'var(--radius-md)',
+        background: active ? 'rgba(255,255,255,.12)' : hov ? 'rgba(255,255,255,.07)' : 'transparent',
+        color: active ? 'white' : 'var(--navy-200)', cursor:'pointer', transition:'background 150ms',
+        borderLeft: active ? '2px solid var(--amber-500)' : '2px solid transparent',
+        marginLeft:'-2px',
+      }}>
+      <span style={{ display:'flex', opacity: active ? 1 : 0.7 }}>{icon}</span>
+      <span style={{ fontSize:'13px', fontWeight: active ? 600 : 400, fontFamily:'var(--font-body)' }}>{label}</span>
+    </div>
+  );
+}
+
+function InlineEdit({ value, onSave }) {
+  const [editing, setEditing] = React.useState(false);
+  const [v, setV] = React.useState(value ? String(value.toFixed(2)).replace('.',',') : '');
+
+  if (!editing) return (
+    <div style={{ display:'flex', alignItems:'center', gap:'6px' }}>
+      <span style={{ fontFamily:'var(--font-mono)', fontSize:'13px', color: value ? 'var(--amber-500)' : 'var(--text-muted)' }}>
+        {value ? `R$ ${Number(value).toLocaleString('pt-BR',{minimumFractionDigits:2})}` : 'usa oficial'}
+      </span>
+      <button onClick={() => setEditing(true)} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--safira-600)', display:'flex', padding:'2px' }}>
+        <EditIcon />
+      </button>
+    </div>
+  );
+
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:'6px' }}>
+      <div style={{ display:'flex', alignItems:'center', border:'1.5px solid var(--amber-500)', borderRadius:'var(--radius-sm)', background:'white', boxShadow:'var(--shadow-focus-amber)', overflow:'hidden', height:'28px' }}>
+        <span style={{ padding:'0 6px', fontSize:'11px', color:'var(--text-muted)', fontFamily:'var(--font-mono)', borderRight:'1px solid var(--neutral-200)', height:'100%', display:'flex', alignItems:'center', background:'var(--neutral-50)' }}>R$</span>
+        <input value={v} onChange={e => setV(e.target.value)} autoFocus
+          style={{ border:'none', outline:'none', padding:'0 8px', width:'90px', fontSize:'13px', fontFamily:'var(--font-mono)', background:'transparent' }}
+          onKeyDown={e => { if(e.key==='Enter'){ const n=parseFloat(v.replace(',','.')); onSave(isNaN(n)?null:n); setEditing(false); } if(e.key==='Escape') setEditing(false); }}/>
+      </div>
+      <button onClick={() => { const n=parseFloat(v.replace(',','.')); onSave(isNaN(n)?null:n); setEditing(false); }}
+        style={{ background:'var(--success-500)', border:'none', borderRadius:'var(--radius-sm)', cursor:'pointer', color:'white', display:'flex', alignItems:'center', padding:'4px', height:'28px', width:'28px', justifyContent:'center' }}>
+        <CheckIcon />
+      </button>
+    </div>
+  );
+}
+
+function App() {
+  const [view, setView] = React.useState('cub');
+  const [rows, setRows] = React.useState(initialRows);
+  const [toasts, setToasts] = React.useState([]);
+  const [filter, setFilter] = React.useState('');
+  React.useEffect(() => { window.__aigNav = setView; }, [setView]);
+
+  const addToast = (msg, sub, variant='success') => {
+    const id = Date.now();
+    setToasts(t => [...t, { id, msg, sub, variant }]);
+    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 4000);
+  };
+
+  const saveRow = (id, config) => {
+    setRows(r => r.map(row => row.id === id ? { ...row, config, status: config ? 'configurado' : 'oficial' } : row));
+    addToast('Valor salvo com sucesso', `CubValue ${rows.find(r=>r.id===id)?.tipo} ${rows.find(r=>r.id===id)?.padrao} atualizado`, 'success');
+  };
+
+  const filtered = rows.filter(r =>
+    !filter || r.tipo.toLowerCase().includes(filter.toLowerCase()) || r.categoria.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const thStyle = { padding:'10px 14px', textAlign:'left', fontSize:'11px', fontFamily:'var(--font-heading)', fontWeight:700, letterSpacing:'.08em', color:'var(--navy-200)', background:'var(--navy-800)', whiteSpace:'nowrap' };
+  const tdStyle = { padding:'10px 14px', fontSize:'13px', borderBottom:'1px solid var(--neutral-200)', verticalAlign:'middle' };
+
+  return (
+    <div style={{ display:'flex', height:'100vh', overflow:'hidden' }}>
+
+      {/* Sidebar */}
+      <aside style={{ width:'220px', flexShrink:0, background:'var(--navy-800)', display:'flex', flexDirection:'column', padding:'0', overflow:'hidden' }}>
+        <div style={{ padding:'20px 16px 16px', borderBottom:'1px solid rgba(255,255,255,.1)' }}>
+          <Logo />
+        </div>
+        <nav style={{ padding:'12px 14px', flex:1, display:'flex', flexDirection:'column', gap:'4px' }}>
+          <NavItem icon={<HomeIcon />} label="Dashboard" active={view==='dash'} onClick={() => setView('dash')} />
+          <NavItem icon={<TableIcon />} label="Tabela CUB" active={view==='cub'} onClick={() => setView('cub')} />
+          <NavItem icon={<UsersIcon />} label="Leads / CRM" active={view==='leads'} onClick={() => setView('leads')} />
+          <NavItem icon={<SettingsIcon />} label="Configurações" active={view==='config'} onClick={() => setView('config')} />
+        </nav>
+        <div style={{ padding:'12px 16px', borderTop:'1px solid rgba(255,255,255,.1)' }}>
+          <div style={{ fontSize:'11px', color:'var(--navy-400)', fontFamily:'var(--font-mono)' }}>Meridiano Urbano v1.0</div>
+          <div style={{ fontSize:'10px', color:'var(--navy-500)', marginTop:'2px' }}>Salvador, BA · SINDUSCON</div>
+        </div>
+      </aside>
+
+      {/* Main */}
+      <main style={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', background:'var(--neutral-100)' }}>
+
+        {/* Top bar */}
+        <header style={{ background:'var(--white)', borderBottom:'1px solid var(--neutral-200)', padding:'0 24px', height:'56px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0, boxShadow:'var(--shadow-xs)' }}>
+          <div>
+            <div style={{ fontSize:'11px', color:'var(--text-muted)', fontFamily:'var(--font-mono)', marginBottom:'2px', letterSpacing:'.04em' }}>
+              {view === 'cub' ? 'ADMIN › TABELA CUB' : view === 'leads' ? 'ADMIN › LEADS / CRM' : view === 'dash' ? 'ADMIN › DASHBOARD' : 'ADMIN › CONFIGURAÇÕES'}
+            </div>
+            <div style={{ fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'15px', color:'var(--navy-800)' }}>
+              {view === 'cub' ? 'Tabela de Valores CUB — Referência Mensal' : view === 'leads' ? 'Gestão de Leads' : view === 'dash' ? 'Dashboard' : 'Configurações'}
+            </div>
+          </div>
+          {view === 'cub' && (
+            <div style={{ display:'flex', gap:'8px' }}>
+              <Button variant="ghost" size="sm" leftIcon={<UploadIcon />} onClick={() => addToast('Arquivo importado', '12 registros atualizados com sucesso', 'info')}>Importar CSV</Button>
+              <Button variant="ghost" size="sm" leftIcon={<DownloadIcon />}>Exportar</Button>
+              <Button variant="primary" size="sm" onClick={() => addToast('Configurações salvas', 'Tabela CUB atualizada com os valores configurados', 'success')}>Salvar Configuração</Button>
+            </div>
+          )}
+        </header>
+
+        {/* Content */}
+        <div style={{ flex:1, overflow:'auto', padding:'20px 24px' }}>
+
+          {/* CUB Table */}
+          {view === 'cub' && (
+            <div style={{ background:'var(--white)', borderRadius:'var(--radius-lg)', boxShadow:'var(--shadow-sm)', overflow:'hidden', border:'1px solid var(--neutral-200)' }}>
+              {/* Filter bar */}
+              <div style={{ padding:'12px 16px', borderBottom:'1px solid var(--neutral-200)', display:'flex', gap:'10px', alignItems:'center', background:'var(--neutral-50)' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:'6px', flex:1, maxWidth:'320px', border:'1.5px solid var(--neutral-300)', borderRadius:'var(--radius-md)', background:'white', height:'32px', padding:'0 10px' }}>
+                  <FilterIcon />
+                  <input value={filter} onChange={e => setFilter(e.target.value)} placeholder="Filtrar por tipo ou categoria..."
+                    style={{ border:'none', outline:'none', flex:1, fontSize:'13px', fontFamily:'var(--font-body)', color:'var(--text-primary)', background:'transparent' }}/>
+                </div>
+                <span style={{ fontSize:'12px', color:'var(--text-muted)', fontFamily:'var(--font-mono)' }}>{filtered.length} tipos CUB</span>
+              </div>
+              <div style={{ overflowX:'auto' }}>
+                <table style={{ width:'100%', borderCollapse:'collapse' }}>
+                  <thead>
+                    <tr>
+                      <th style={thStyle}>TIPO</th>
+                      <th style={thStyle}>CATEGORIA</th>
+                      <th style={thStyle}>PADRÃO</th>
+                      <th style={{...thStyle, textAlign:'right'}}>VALOR OFICIAL</th>
+                      <th style={{...thStyle, textAlign:'left'}}>VALOR CONFIG.</th>
+                      <th style={{...thStyle, textAlign:'right'}}>TAXA REF.</th>
+                      <th style={thStyle}>DATA REF.</th>
+                      <th style={thStyle}>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((row, i) => {
+                      const diff = row.config && row.oficial ? ((row.config - row.oficial) / row.oficial * 100) : null;
+                      return (
+                        <tr key={row.id} style={{ background: i%2===0 ? 'white' : 'var(--neutral-50)' }}
+                          onMouseEnter={e => e.currentTarget.style.background='var(--navy-50)'}
+                          onMouseLeave={e => e.currentTarget.style.background= i%2===0 ? 'white' : 'var(--neutral-50)'}>
+                          <td style={tdStyle}>
+                            <span style={{ fontFamily:'var(--font-mono)', fontWeight:500, fontSize:'13px', color:'var(--navy-700)' }}>{row.tipo}</span>
+                          </td>
+                          <td style={{...tdStyle, color:'var(--text-secondary)', maxWidth:'180px'}}>{row.categoria}</td>
+                          <td style={tdStyle}>
+                            <span style={{ fontSize:'12px', color:'var(--text-secondary)' }}>{row.padrao}</span>
+                          </td>
+                          <td style={{...tdStyle, textAlign:'right'}}>
+                            <span style={{ fontFamily:'var(--font-mono)', fontSize:'13px', color:'var(--text-primary)' }}>{fmt(row.oficial)}</span>
+                          </td>
+                          <td style={tdStyle}>
+                            <InlineEdit value={row.config} onSave={v => saveRow(row.id, v)} />
+                          </td>
+                          <td style={{...tdStyle, textAlign:'right'}}>
+                            <span style={{ fontFamily:'var(--font-mono)', fontSize:'13px', color:'var(--amber-600)', fontWeight:500 }}>{row.taxa}</span>
+                          </td>
+                          <td style={{...tdStyle, color:'var(--text-muted)', fontSize:'12px', fontFamily:'var(--font-mono)'}}>{row.ref}</td>
+                          <td style={tdStyle}>
+                            {STATUS_MAP[row.status] && <Badge label={STATUS_MAP[row.status].label} variant={STATUS_MAP[row.status].variant} size="sm" dot />}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <div style={{ padding:'8px 16px', borderTop:'1px solid var(--neutral-200)', background:'var(--neutral-50)', fontSize:'11px', color:'var(--text-muted)', fontFamily:'var(--font-mono)', display:'flex', gap:'16px' }}>
+                <span>U<sub>fundo</sub> verde = ConfiguredValue ativo</span>
+                <span>"usa oficial" = ConfiguredValue null</span>
+              </div>
+            </div>
+          )}
+
+          {/* Leads CRM */}
+          {view === 'leads' && (
+            <div style={{ background:'var(--white)', borderRadius:'var(--radius-lg)', boxShadow:'var(--shadow-sm)', overflow:'hidden', border:'1px solid var(--neutral-200)' }}>
+              <div style={{ padding:'12px 16px', borderBottom:'1px solid var(--neutral-200)', background:'var(--neutral-50)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                <span style={{ fontSize:'12px', fontFamily:'var(--font-mono)', color:'var(--text-muted)' }}>{leads.length} leads</span>
+                <div style={{ display:'flex', gap:'8px' }}>
+                  {['Todos','Novos','Em Análise','Avaliados'].map(f => (
+                    <button key={f} style={{ padding:'4px 12px', borderRadius:'var(--radius-full)', fontSize:'12px', fontFamily:'var(--font-body)', border:'1px solid var(--neutral-300)', background: f==='Todos' ? 'var(--navy-800)' : 'white', color: f==='Todos' ? 'white' : 'var(--text-secondary)', cursor:'pointer' }}>{f}</button>
+                  ))}
+                </div>
+              </div>
+              <table style={{ width:'100%', borderCollapse:'collapse' }}>
+                <thead>
+                  <tr>
+                    {['NOME','EMAIL','TIPO','BAIRRO','STATUS','DATA',''].map((h,i) => (
+                      <th key={i} style={{...thStyle, textAlign: i===6 ? 'center' : 'left'}}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {leads.map((lead, i) => (
+                    <tr key={lead.id} style={{ background: i%2===0 ? 'white' : 'var(--neutral-50)' }}
+                      onMouseEnter={e => e.currentTarget.style.background='var(--navy-50)'}
+                      onMouseLeave={e => e.currentTarget.style.background= i%2===0 ? 'white' : 'var(--neutral-50)'}>
+                      <td style={tdStyle}>
+                        <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+                          <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'var(--navy-100)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'13px', color:'var(--navy-700)', flexShrink:0 }}>
+                            {lead.nome.split(' ').slice(0,2).map(n=>n[0]).join('')}
+                          </div>
+                          <span style={{ fontWeight:500, fontSize:'13px' }}>{lead.nome}</span>
+                        </div>
+                      </td>
+                      <td style={{...tdStyle, color:'var(--text-secondary)', fontSize:'12px', fontFamily:'var(--font-mono)'}}>{lead.email}</td>
+                      <td style={{...tdStyle, color:'var(--text-secondary)', fontSize:'13px'}}>{lead.tipo}</td>
+                      <td style={{...tdStyle, color:'var(--text-secondary)', fontSize:'13px'}}>{lead.bairro}</td>
+                      <td style={tdStyle}>
+                        {STATUS_MAP[lead.status] && <Badge label={STATUS_MAP[lead.status].label} variant={STATUS_MAP[lead.status].variant} size="sm" dot />}
+                      </td>
+                      <td style={{...tdStyle, color:'var(--text-muted)', fontSize:'12px', fontFamily:'var(--font-mono)'}}>{lead.data}</td>
+                      <td style={{...tdStyle, textAlign:'center'}}>
+                        <button style={{ background:'none', border:'none', cursor:'pointer', color:'var(--safira-600)', display:'flex', alignItems:'center', justifyContent:'center', padding:'4px', borderRadius:'var(--radius-sm)' }}
+                          onClick={() => addToast(`Lead de ${lead.nome}`, `${lead.tipo} em ${lead.bairro} — ${lead.email}`, 'info')}>
+                          <EditIcon />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Dashboard placeholder */}
+          {view === 'dash' && (
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'16px' }}>
+              {[{label:'Leads hoje',val:'7',sub:'+3 em análise'},{label:'Avaliações emitidas',val:'142',sub:'Mai/2025'},{label:'CUBs configurados',val:'5 / 12',sub:'Última atualização: Mai/2025'}].map(({label,val,sub}) => (
+                <div key={label} style={{ background:'var(--white)', borderRadius:'var(--radius-lg)', border:'1px solid var(--neutral-200)', padding:'20px 24px', boxShadow:'var(--shadow-sm)' }}>
+                  <div style={{ fontSize:'12px', color:'var(--text-muted)', fontFamily:'var(--font-mono)', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:'8px' }}>{label}</div>
+                  <div style={{ fontFamily:'var(--font-mono)', fontSize:'32px', color:'var(--navy-800)', lineHeight:1, marginBottom:'6px' }}>{val}</div>
+                  <div style={{ fontSize:'12px', color:'var(--text-secondary)' }}>{sub}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Toast stack */}
+      <div style={{ position:'fixed', bottom:'24px', right:'24px', display:'flex', flexDirection:'column', gap:'10px', zIndex:300 }}>
+        {toasts.map(t => (
+          <Toast key={t.id} message={t.msg} subtitle={t.sub} variant={t.variant} onDismiss={() => setToasts(ts => ts.filter(x => x.id !== t.id))} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

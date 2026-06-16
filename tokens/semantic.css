@@ -1,0 +1,40 @@
+/* Meridiano Urbano — Semantic Alias Tokens */
+
+:root {
+  /* ── Superfícies ── */
+  --surface-page:    var(--neutral-50);
+  --surface-card:    var(--white);
+  --surface-raised:  var(--white);
+  --surface-overlay: rgba(10,30,42,0.60);
+  --surface-navy:    var(--navy-800);
+  --surface-navy-dark: var(--navy-900);
+
+  /* ── Texto ── */
+  --text-primary:   var(--neutral-900);
+  --text-secondary: var(--neutral-700);
+  --text-muted:     var(--neutral-500);
+  --text-disabled:  var(--neutral-400);
+  --text-inverse:   var(--white);
+  --text-navy:      var(--navy-800);
+  --text-amber:     var(--amber-500);
+  --text-safira:    var(--safira-600);
+
+  /* ── Brand aliases ── */
+  --brand-primary:   var(--navy-800);
+  --brand-accent:    var(--amber-500);
+  --brand-secondary: var(--safira-600);
+
+  /* ── Interativos ── */
+  --interactive-primary-bg:       var(--navy-800);
+  --interactive-primary-bg-hover: var(--navy-700);
+  --interactive-primary-bg-press: var(--navy-900);
+  --interactive-accent-bg:        var(--amber-500);
+  --interactive-accent-bg-hover:  var(--amber-600);
+  --interactive-accent-bg-press:  var(--amber-700);
+
+  /* ── Estado ── */
+  --status-success: var(--success-500);
+  --status-error:   var(--error-500);
+  --status-info:    var(--info-500);
+  --status-alert:   var(--alert-500);
+}

@@ -1,0 +1,57 @@
+<!-- @dsCard group="Components" viewport="700x280" name="Feedback" subtitle="Badges de status e Toasts de confirmação" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 20px 24px; background: var(--neutral-50); font-family: var(--font-body); }
+  .label { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 10px; letter-spacing: .06em; text-transform: uppercase; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 20px; }
+  .toasts { display: flex; flex-direction: column; gap: 10px; }
+  .divider { border: none; border-top: 1px solid var(--neutral-200); margin: 4px 0 16px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { Badge, Toast } = window.MeridianoUrbanoAIGDesignSystem_405b20;
+
+function App() {
+  return (
+    <div>
+      <div className="label">Badges de status</div>
+      <div className="row">
+        <Badge label="Ativo" variant="success" dot />
+        <Badge label="Inativo" variant="error" dot />
+        <Badge label="Configurado" variant="amber" dot />
+        <Badge label="Oficial" variant="info" dot />
+        <Badge label="Em Revisão" variant="alert" dot />
+        <Badge label="Rascunho" variant="neutral" />
+      </div>
+      <div className="row">
+        <Badge label="Ativo" variant="success" size="sm" />
+        <Badge label="Inativo" variant="error" size="sm" />
+        <Badge label="Configurado" variant="amber" size="sm" />
+        <Badge label="Oficial" variant="info" size="sm" />
+        <Badge label="Em Revisão" variant="alert" size="sm" />
+      </div>
+      <hr className="divider" />
+      <div className="label">Toasts</div>
+      <div className="toasts">
+        <Toast message="Valor salvo com sucesso" subtitle="CubValue R-16 Médio atualizado" variant="success" />
+        <Toast message="Campo inválido" subtitle="Verifique os dados e tente novamente" variant="error" />
+        <Toast message="Tabela CUB atualizada" subtitle="Referência: Mai/2025" variant="info" />
+        <Toast message="Registro requer revisão" subtitle="Valor configurado difere >5% do oficial" variant="alert" />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 100" fill="none">
+  
+  <rect x="10" y="46" width="60" height="48" fill="#002445" rx="2"></rect>
+  <polygon points="40,6 70,50 10,50" fill="#E87D2C"></polygon>
+  <rect x="16" y="54" width="16" height="12" fill="white" rx="1"></rect>
+  <rect x="38" y="54" width="16" height="12" fill="white" rx="1"></rect>
+  <rect x="24" y="68" width="18" height="26" fill="white" rx="1"></rect>
+  <circle cx="35" cy="83" r="1.5" fill="#E87D2C"></circle>
+  
+  <text x="88" y="72" font-family="&#39;Big Shoulders Display&#39;, sans-serif" font-size="60" font-weight="800" fill="#002445" letter-spacing="-2">AIG</text>
+  
+  <text x="88" y="92" font-family="&#39;Work Sans&#39;, sans-serif" font-size="11" font-weight="600" fill="#002445" letter-spacing="3">AVALIAÇÃO DE IMÓVEIS </text>
+  <text x="400" y="92" font-family="&#39;Work Sans&#39;, sans-serif" font-size="11" font-weight="700" fill="#E87D2C" letter-spacing="3">GRATUITA</text>
+</svg>

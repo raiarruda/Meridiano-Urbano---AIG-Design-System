@@ -1,0 +1,39 @@
+<!-- @dsCard group="Brand" viewport="700x320" name="Logo — Variações" subtitle="Ícone casa + wordmark AIG em todas as variações" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;font-family:var(--font-body);}
+  .grid{display:grid;grid-template-columns:1fr 1fr;height:320px;}
+  .cell{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;}
+  .label{font-size:10px;font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase;}
+  img{max-width:180px;max-height:120px;}
+  .cell-dark{background:var(--navy-800);}
+  .cell-dark .label{color:var(--navy-300);}
+  .cell-light{background:var(--white);border:1px solid var(--neutral-200);}
+  .cell-light .label{color:var(--text-muted);}
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="cell cell-dark">
+    <img src="../assets/logo-stacked.svg" alt="Logo AIG empilhado fundo escuro" style="filter:invert(1)">
+    <span class="label">Versão primária — fundo escuro</span>
+  </div>
+  <div class="cell cell-light">
+    <img src="../assets/logo-stacked.svg" alt="Logo AIG empilhado fundo claro">
+    <span class="label">Versão clara — fundo branco</span>
+  </div>
+  <div class="cell cell-dark" style="background:var(--neutral-50)">
+    <img src="../assets/logo-horizontal.svg" alt="Logo AIG horizontal">
+    <span class="label" style="color:var(--text-muted)">Versão horizontal</span>
+  </div>
+  <div class="cell cell-light" style="gap:16px;flex-direction:row;justify-content:center;">
+    <img src="../assets/logo-icon-amber-bg.svg" alt="Ícone fundo navy" style="max-width:72px;max-height:72px;">
+    <img src="../assets/logo-icon-fundo-amber.svg" alt="Ícone fundo amber" style="max-width:72px;max-height:72px;">
+    <img src="../assets/logo-icon.svg" alt="Ícone standalone" style="max-width:72px;max-height:72px;">
+    <span class="label" style="align-self:flex-end;color:var(--text-muted)">Variações de ícone</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 320" fill="none">
+  
+  <rect x="65" y="148" width="170" height="132" fill="#002445" rx="2"></rect>
+  <polygon points="150,40 235,153 65,153" fill="#E87D2C"></polygon>
+  <rect x="83" y="168" width="42" height="34" fill="white" rx="2"></rect>
+  <rect x="175" y="168" width="42" height="34" fill="white" rx="2"></rect>
+  <rect x="114" y="202" width="52" height="78" fill="white" rx="2"></rect>
+  <circle cx="158" cy="244" r="3.5" fill="#E87D2C"></circle>
+  
+  <text x="150" y="304" font-family="&#39;Big Shoulders Display&#39;, sans-serif" font-size="52" font-weight="700" fill="#002445" text-anchor="middle" letter-spacing="-1">AIG</text>
+</svg>

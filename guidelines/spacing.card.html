@@ -1,0 +1,30 @@
+<!-- @dsCard group="Spacing" viewport="700x160" name="Escala de Espaçamento" subtitle="Base 8px — tokens --space-1 a --space-24" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;padding:16px 20px;background:var(--white);font-family:var(--font-body);}
+  .row{display:flex;align-items:flex-end;gap:8px;}
+  .item{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .bar{background:var(--navy-400);border-radius:var(--radius-xs);}
+  .label{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);text-align:center;}
+  .px{font-size:9px;color:var(--neutral-400);text-align:center;}
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="item"><div class="bar" style="width:20px;height:4px"></div><span class="label">--1</span><span class="px">4px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:8px"></div><span class="label">--2</span><span class="px">8px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:12px"></div><span class="label">--3</span><span class="px">12px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:16px"></div><span class="label">--4</span><span class="px">16px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:20px"></div><span class="label">--5</span><span class="px">20px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:24px"></div><span class="label">--6</span><span class="px">24px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:32px"></div><span class="label">--8</span><span class="px">32px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:40px"></div><span class="label">--10</span><span class="px">40px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:48px"></div><span class="label">--12</span><span class="px">48px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:64px"></div><span class="label">--16</span><span class="px">64px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:80px"></div><span class="label">--20</span><span class="px">80px</span></div>
+  <div class="item"><div class="bar" style="width:20px;height:96px;background:var(--amber-400)"></div><span class="label">--24</span><span class="px">96px</span></div>
+</div>
+</body>
+</html>

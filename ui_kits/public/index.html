@@ -1,0 +1,260 @@
+<!-- @dsCard group="Área Pública" viewport="1280x800" name="Formulário de Avaliação" subtitle="Landing page com form multi-step de avaliação gratuita" -->
+<!-- @startingPoint section="Área Pública" subtitle="Landing page + formulário de avaliação de imóvel" viewport="1280x800" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIG — Avaliação de Imóveis Gratuita</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--neutral-100); font-family: var(--font-body); color: var(--text-primary); }
+  input, select { font-family: var(--font-body); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { Button, Input, Select, Checkbox, Badge } = window.MeridianoUrbanoAIGDesignSystem_405b20;
+
+const BAIRROS = ['Barra','Pituba','Ondina','Graça','Vitória','Imbuí','Itaigara','Brotas','Federação','Comércio','Rio Vermelho','Caminho das Árvores','Stiep','Paralela','Cabula'];
+const TIPOS = ['Apartamento','Casa','Casa em Condomínio','Sala Comercial','Loja','Terreno'];
+const PADRAO = [{value:'alto',label:'Alto'},{value:'medio',label:'Médio'},{value:'baixo',label:'Baixo / Popular'}];
+const QUARTOS = ['1 quarto','2 quartos','3 quartos','4 quartos','5+ quartos','N/A (comercial/terreno)'];
+
+function Logo({ dark = false }) {
+  const c = dark ? '#fff' : 'var(--navy-800)';
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+      <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+        <rect x="18" y="52" width="64" height="44" fill={dark ? '#fff' : 'var(--navy-800)'} rx="2"/>
+        <polygon points="50,8 82,55 18,55" fill="var(--amber-500)"/>
+        <rect x="25" y="60" width="18" height="13" fill={dark ? 'var(--navy-800)' : '#fff'} rx="1"/>
+        <rect x="57" y="60" width="18" height="13" fill={dark ? 'var(--navy-800)' : '#fff'} rx="1"/>
+        <rect x="33" y="75" width="22" height="21" fill={dark ? 'var(--navy-800)' : '#fff'} rx="1"/>
+      </svg>
+      <div>
+        <div style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:'22px', color: c, letterSpacing:'-0.02em', lineHeight:1 }}>AIG</div>
+        <div style={{ fontFamily:'var(--font-heading)', fontSize:'8px', fontWeight:600, letterSpacing:'.14em', color: dark ? 'var(--amber-400)' : 'var(--amber-500)', lineHeight:1, marginTop:'2px' }}>AVALIAÇÃO DE IMÓVEIS</div>
+      </div>
+    </div>
+  );
+}
+
+function StepDot({ num, label, active, done }) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
+      <div style={{
+        width:'28px', height:'28px', borderRadius:'50%', flexShrink:0,
+        display:'flex', alignItems:'center', justifyContent:'center',
+        background: done ? 'var(--success-500)' : active ? 'var(--amber-500)' : 'var(--neutral-200)',
+        color: done || active ? '#fff' : 'var(--neutral-500)',
+        fontSize:'13px', fontWeight:700, fontFamily:'var(--font-heading)',
+        transition:'all 200ms ease-out',
+      }}>
+        {done ? '✓' : num}
+      </div>
+      <span style={{ fontSize:'13px', fontWeight: active ? 600 : 400, color: active ? 'var(--text-primary)' : 'var(--text-muted)', transition:'color 200ms' }}>{label}</span>
+    </div>
+  );
+}
+
+function FieldGroup({ children }) {
+  return <div style={{ display:'flex', flexDirection:'column', gap:'16px' }}>{children}</div>;
+}
+function Row({ children }) {
+  return <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px' }}>{children}</div>;
+}
+
+function Step1({ data, setData }) {
+  return (
+    <FieldGroup>
+      <Row>
+        <Input label="Cidade" value="Salvador" disabled helperText="Apenas Salvador, BA no momento" />
+        <Select label="Bairro" required value={data.bairro} onChange={e => setData({...data, bairro: e.target.value})}
+          options={BAIRROS} placeholder="Selecione o bairro..." />
+      </Row>
+      <Input label="Endereço (opcional)" placeholder="Ex: Rua das Palmeiras, 120, Apto 301"
+        value={data.endereco} onChange={e => setData({...data, endereco: e.target.value})}
+        helperText="Quanto mais preciso, melhor a avaliação." />
+    </FieldGroup>
+  );
+}
+
+function Step2({ data, setData }) {
+  return (
+    <FieldGroup>
+      <Select label="Tipo de imóvel" required value={data.tipo} onChange={e => setData({...data, tipo: e.target.value})}
+        options={TIPOS} placeholder="Selecione o tipo..." />
+      <Row>
+        <Select label="Padrão de acabamento" value={data.padrao} onChange={e => setData({...data, padrao: e.target.value})}
+          options={PADRAO} placeholder="Selecione..." />
+        <Input label="Área total (m²)" type="number" required suffix="m²"
+          value={data.area} onChange={e => setData({...data, area: e.target.value})}
+          placeholder="Ex: 85" />
+      </Row>
+      <Row>
+        <Select label="Quartos" value={data.quartos} onChange={e => setData({...data, quartos: e.target.value})}
+          options={QUARTOS} placeholder="Quantidade de quartos..." />
+        <Input label="Vagas de garagem" type="number" value={data.vagas}
+          onChange={e => setData({...data, vagas: e.target.value})} placeholder="Ex: 1" />
+      </Row>
+    </FieldGroup>
+  );
+}
+
+function Step3({ data, setData }) {
+  return (
+    <FieldGroup>
+      <Input label="Nome completo" required value={data.nome} onChange={e => setData({...data, nome: e.target.value})} placeholder="Ex: Ana Paula Sousa" />
+      <Row>
+        <Input label="E-mail" type="email" required value={data.email} onChange={e => setData({...data, email: e.target.value})} placeholder="seu@email.com" helperText="O resultado será enviado aqui." />
+        <Input label="WhatsApp (opcional)" type="tel" value={data.tel} onChange={e => setData({...data, tel: e.target.value})} placeholder="(71) 9 0000-0000" />
+      </Row>
+      <Checkbox checked={data.termos} onChange={e => setData({...data, termos: e.target.checked})}
+        label="Li e aceito os termos de uso e a política de privacidade da AIG." />
+    </FieldGroup>
+  );
+}
+
+function ResultScreen({ nome, onReset }) {
+  return (
+    <div style={{ textAlign:'center', padding:'24px 0 8px' }}>
+      <div style={{ width:'64px', height:'64px', borderRadius:'50%', background:'var(--success-50)', border:'2px solid var(--success-500)', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 20px' }}>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--success-500)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h2 style={{ fontFamily:'var(--font-heading)', fontSize:'22px', fontWeight:700, color:'var(--navy-800)', margin:'0 0 8px' }}>
+        Avaliação em processamento!
+      </h2>
+      <p style={{ fontSize:'15px', color:'var(--text-secondary)', margin:'0 0 24px', lineHeight:1.6 }}>
+        Olá, <strong>{nome || 'cliente'}</strong>! Recebemos seus dados. O resultado detalhado será enviado para seu e-mail em até <strong>5 minutos</strong>.
+      </p>
+      <div style={{ background:'var(--navy-50)', border:'1px solid var(--navy-100)', borderRadius:'var(--radius-lg)', padding:'16px', marginBottom:'24px', textAlign:'left' }}>
+        <div style={{ fontFamily:'var(--font-mono)', fontSize:'11px', color:'var(--text-muted)', marginBottom:'6px', letterSpacing:'.06em' }}>PRÓXIMOS PASSOS</div>
+        {['Verifique sua caixa de entrada.','Abra o e-mail da AIG com o laudo.','Em caso de dúvidas, responda diretamente ao e-mail.'].map((t,i) => (
+          <div key={i} style={{ display:'flex', gap:'10px', fontSize:'13px', color:'var(--text-secondary)', marginTop:'8px' }}>
+            <span style={{ color:'var(--amber-500)', fontWeight:700, flexShrink:0 }}>{i+1}.</span>{t}
+          </div>
+        ))}
+      </div>
+      <button onClick={onReset} style={{ background:'none', border:'none', color:'var(--safira-600)', fontSize:'14px', cursor:'pointer', fontFamily:'var(--font-body)', textDecoration:'underline' }}>
+        Fazer nova avaliação
+      </button>
+    </div>
+  );
+}
+
+function App() {
+  const [step, setStep] = React.useState(1);
+  const [loc, setLoc] = React.useState({ bairro:'', endereco:'' });
+  const [prop, setProp] = React.useState({ tipo:'', padrao:'', area:'', quartos:'', vagas:'' });
+  const [contact, setContact] = React.useState({ nome:'', email:'', tel:'', termos: false });
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const canNext = step === 1 ? !!loc.bairro : step === 2 ? (!!prop.tipo && !!prop.area) : (!!contact.nome && !!contact.email && contact.termos);
+
+  const STEPS = ['Localização','Características','Seus dados'];
+
+  return (
+    <div style={{ minHeight:'100vh', display:'flex', flexDirection:'column' }}>
+      {/* Nav */}
+      <nav style={{ background:'var(--navy-800)', padding:'0 40px', height:'60px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
+        <Logo dark />
+        <a href="#" style={{ fontFamily:'var(--font-body)', fontSize:'13px', color:'var(--navy-200)', textDecoration:'none', letterSpacing:'.04em' }}>Área Admin →</a>
+      </nav>
+
+      {/* Hero */}
+      <div style={{ background:'var(--navy-900)', padding:'56px 40px 80px', textAlign:'center', flexShrink:0 }}>
+        <div style={{ fontFamily:'var(--font-display)', fontSize:'60px', fontWeight:900, color:'var(--white)', letterSpacing:'-0.02em', lineHeight:1, marginBottom:'12px', textTransform:'uppercase' }}>
+          AVALIAÇÃO<br/><span style={{ color:'var(--amber-500)' }}>GRATUITA</span>
+        </div>
+        <p style={{ fontSize:'17px', color:'var(--navy-200)', margin:'0', fontFamily:'var(--font-body)', maxWidth:'480px', marginLeft:'auto', marginRight:'auto', lineHeight:1.6 }}>
+          Descubra o valor do seu imóvel em Salvador com base nos índices CUB oficiais do SINDUSCON-BA.
+        </p>
+      </div>
+
+      {/* Form Card */}
+      <div style={{ flex:1, display:'flex', justifyContent:'center', padding:'0 20px 64px', marginTop:'-48px' }}>
+        <div style={{ width:'100%', maxWidth:'640px', background:'var(--white)', borderRadius:'var(--radius-xl)', boxShadow:'var(--shadow-2xl)', overflow:'hidden' }}>
+
+          {/* Step indicator */}
+          {!submitted && (
+            <div style={{ padding:'20px 32px', borderBottom:'1px solid var(--neutral-200)', display:'flex', gap:'24px' }}>
+              {STEPS.map((s, i) => <StepDot key={i} num={i+1} label={s} active={step === i+1} done={step > i+1} />)}
+            </div>
+          )}
+
+          {/* Form content */}
+          <div style={{ padding:'32px' }}>
+            {submitted ? (
+              <ResultScreen nome={contact.nome} onReset={() => { setStep(1); setSubmitted(false); setLoc({bairro:'',endereco:''}); setProp({tipo:'',padrao:'',area:'',quartos:'',vagas:''}); setContact({nome:'',email:'',tel:'',termos:false}); }} />
+            ) : (
+              <>
+                <div style={{ marginBottom:'24px' }}>
+                  <h2 style={{ fontFamily:'var(--font-heading)', fontSize:'20px', fontWeight:700, color:'var(--navy-800)', margin:'0 0 4px' }}>
+                    {step === 1 ? 'Onde fica o imóvel?' : step === 2 ? 'Sobre o imóvel' : 'Seus dados de contato'}
+                  </h2>
+                  <p style={{ fontSize:'14px', color:'var(--text-muted)', margin:0 }}>
+                    {step === 1 ? 'Informe a localização para iniciar a avaliação.' : step === 2 ? 'Quanto mais detalhes, mais precisa será a avaliação.' : 'O laudo será enviado gratuitamente para seu e-mail.'}
+                  </p>
+                </div>
+                {step === 1 && <Step1 data={loc} setData={setLoc} />}
+                {step === 2 && <Step2 data={prop} setData={setProp} />}
+                {step === 3 && <Step3 data={contact} setData={setContact} />}
+                <div style={{ display:'flex', justifyContent:'space-between', marginTop:'28px', paddingTop:'20px', borderTop:'1px solid var(--neutral-200)' }}>
+                  {step > 1
+                    ? <Button variant="ghost" onClick={() => setStep(s => s - 1)}>← Voltar</Button>
+                    : <div />}
+                  {step < 3
+                    ? <Button variant="primary" disabled={!canNext} onClick={() => setStep(s => s + 1)}>Continuar →</Button>
+                    : <Button variant="accent" size="lg" disabled={!canNext} onClick={() => setSubmitted(true)}>Solicitar Avaliação Gratuita</Button>}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* How it works */}
+      <div style={{ background:'var(--white)', borderTop:'1px solid var(--neutral-200)', padding:'48px 40px' }}>
+        <div style={{ maxWidth:'800px', margin:'0 auto' }}>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:'28px', fontWeight:800, color:'var(--navy-800)', textTransform:'uppercase', letterSpacing:'-0.01em', marginBottom:'32px', textAlign:'center' }}>COMO FUNCIONA</div>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'32px' }}>
+            {[
+              { n:'01', t:'Preencha o formulário', d:'Informe localização e características do imóvel. Leva menos de 2 minutos.' },
+              { n:'02', t:'Calculamos o valor', d:'Usamos o CUB vigente do SINDUSCON-BA e o VUPT do logradouro para a avaliação.' },
+              { n:'03', t:'Receba o laudo', d:'O resultado chega no seu e-mail em até 5 minutos, gratuitamente.' },
+            ].map(({ n, t, d }) => (
+              <div key={n}>
+                <div style={{ fontFamily:'var(--font-mono)', fontSize:'32px', color:'var(--amber-500)', fontWeight:400, lineHeight:1, marginBottom:'12px' }}>{n}</div>
+                <div style={{ fontFamily:'var(--font-heading)', fontWeight:700, fontSize:'15px', color:'var(--navy-800)', marginBottom:'8px' }}>{t}</div>
+                <div style={{ fontSize:'13px', color:'var(--text-secondary)', lineHeight:1.6 }}>{d}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer style={{ background:'var(--navy-900)', padding:'20px 40px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <Logo dark />
+        <span style={{ fontFamily:'var(--font-body)', fontSize:'12px', color:'var(--navy-400)' }}>© 2025 AIG Avaliação de Imóveis · Salvador, BA</span>
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

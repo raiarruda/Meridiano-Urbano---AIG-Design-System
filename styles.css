@@ -1,0 +1,10 @@
+/* Meridiano Urbano — AIG Design System
+   Global entry point. Import only — no inline rules here. */
+
+@import url('./tokens/fonts.css');
+@import url('./tokens/colors.css');
+@import url('./tokens/typography.css');
+@import url('./tokens/spacing.css');
+@import url('./tokens/shadows.css');
+@import url('./tokens/borders.css');
+@import url('./tokens/semantic.css');

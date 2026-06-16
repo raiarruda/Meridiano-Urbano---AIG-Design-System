@@ -1,0 +1,25 @@
+/* Meridiano Urbano — Border & Radius Tokens */
+
+:root {
+  /* ── Bordas ── */
+  --border-width-thin:   1px;
+  --border-width-base:   1.5px;
+  --border-width-medium: 2px;
+  --border-width-thick:  3px;
+
+  --border-color-default: var(--neutral-300);
+  --border-color-muted:   var(--neutral-200);
+  --border-color-strong:  var(--neutral-700);
+  --border-color-navy:    var(--navy-800);
+  --border-color-amber:   var(--amber-500);
+  --border-color-safira:  var(--safira-600);
+
+  /* ── Raios ── */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-full: 9999px;
+}

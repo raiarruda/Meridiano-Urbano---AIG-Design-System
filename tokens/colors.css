@@ -1,0 +1,69 @@
+/* Meridiano Urbano — Color Tokens */
+
+:root {
+  /* ── Navy – Primária ── */
+  --navy-900: #001420;
+  --navy-800: #002445;
+  --navy-700: #0D2F57;
+  --navy-600: #144B82;
+  --navy-500: #1E5291;
+  --navy-400: #3469A8;
+  --navy-300: #6B95C8;
+  --navy-200: #A8C2E0;
+  --navy-100: #D7E5F8;
+  --navy-50:  #EEF4FC;
+
+  /* ── Amber – Destaque ── */
+  --amber-900: #7A3800;
+  --amber-800: #A84E00;
+  --amber-700: #C0620A;
+  --amber-600: #D06E18;
+  --amber-500: #E87D2C;
+  --amber-400: #F09350;
+  --amber-300: #F5AD7A;
+  --amber-200: #F9CAA8;
+  --amber-100: #FDE5CC;
+  --amber-50:  #FFF4EB;
+
+  /* ── Safira – Secundária ── */
+  --safira-900: #062837;
+  --safira-800: #0C4860;
+  --safira-700: #126A89;
+  --safira-600: #1A6B94;
+  --safira-500: #2480AD;
+  --safira-400: #4A9FC5;
+  --safira-300: #7BBFD8;
+  --safira-200: #AADAEC;
+  --safira-100: #D4EFF8;
+  --safira-50:  #EAF8FD;
+
+  /* ── Neutros ── */
+  --neutral-900: #0A1E2A;
+  --neutral-800: #161E2A;
+  --neutral-700: #374457;
+  --neutral-600: #4A5568;
+  --neutral-500: #6B7280;
+  --neutral-400: #9CA3AF;
+  --neutral-300: #DAE1EC;
+  --neutral-200: #E8EDF5;
+  --neutral-100: #F0F3F8;
+  --neutral-50:  #F8FAFC;
+
+  /* ── Branco / Preto ── */
+  --white: #FFFFFF;
+  --black: #000000;
+
+  /* ── Semânticas ── */
+  --success-500: #26A85E;
+  --success-100: #D1F0E0;
+  --success-50:  #EDFBF3;
+  --error-500:   #D63744;
+  --error-100:   #F9D0D3;
+  --error-50:    #FDF0F1;
+  --info-500:    #1A6B94;
+  --info-100:    #D4EFF8;
+  --info-50:     #EAF8FD;
+  --alert-500:   #C0B816;
+  --alert-100:   #F5F1C0;
+  --alert-50:    #FAFBE8;
+}

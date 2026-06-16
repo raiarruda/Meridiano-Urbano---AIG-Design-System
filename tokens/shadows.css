@@ -1,0 +1,19 @@
+/* Meridiano Urbano — Shadow Tokens */
+
+:root {
+  --shadow-xs:  0 1px 2px 0 rgba(13,36,69,0.08);
+  --shadow-sm:  0 1px 4px 0 rgba(13,36,69,0.10), 0 1px 2px 0 rgba(13,36,69,0.06);
+  --shadow-md:  0 4px 12px 0 rgba(13,36,69,0.12), 0 2px 4px 0 rgba(13,36,69,0.08);
+  --shadow-lg:  0 8px 24px 0 rgba(13,36,69,0.14), 0 4px 8px 0 rgba(13,36,69,0.08);
+  --shadow-xl:  0 16px 40px 0 rgba(13,36,69,0.16), 0 8px 16px 0 rgba(13,36,69,0.10);
+  --shadow-2xl: 0 24px 64px 0 rgba(13,36,69,0.20), 0 12px 24px 0 rgba(13,36,69,0.12);
+
+  /* Amber glow — botão primário hover */
+  --shadow-amber: 0 4px 16px 0 rgba(232,125,44,0.35);
+
+  /* Inner shadows — campos foco */
+  --shadow-focus-navy:   0 0 0 3px rgba(30,82,145,0.25);
+  --shadow-focus-amber:  0 0 0 3px rgba(232,125,44,0.30);
+  --shadow-focus-safira: 0 0 0 3px rgba(26,107,148,0.25);
+  --shadow-focus-error:  0 0 0 3px rgba(214,55,68,0.25);
+}
